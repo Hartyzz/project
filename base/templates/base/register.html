@@ -1,0 +1,60 @@
+{% extends 'base/main.html' %}
+{% block content %}
+
+<style>
+    .header-bar {
+        margin: 0 auto
+    }
+</style>
+
+<div class="header-bar register">
+    <h1>Register</h1>
+</div>
+
+<div class="card-body">
+    <form method="POST">
+        {% csrf_token %}
+        <label>{{ form.username.label }}</label>
+        {{ form.username }}
+
+        <label>{{ form.first_name.label }}</label>
+        {{ form.first_name }}
+
+        <label>{{ form.last_name.label }}</label>
+        {{ form.last_name }}
+
+        <label>{{ form.password1.label }}</label>
+        {{ form.password1 }}
+
+        <label>{{ form.password2.label }}</label>
+        {{ form.password2 }}
+
+        <input type="text" id="generatedPassword" readonly style="margin-top:10px;">
+        <button class="button" type="button" onclick="generateAndSetPassword()">Generate Password</button>
+        <input style="margin-top:10px;" class="button" type="submit" value="Register">
+    </form>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+
+<script>
+    function generateAndSetPassword() {
+        const passwordLength = 12; // Длина генерируемого пароля
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+
+        let generatedPassword = "";
+        for (let i = 0; i < passwordLength; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            generatedPassword += charset[randomIndex];
+        }
+
+        const passwordInput1 = document.getElementById("id_password1");
+        const passwordInput2 = document.getElementById("id_password2");
+        const generatedPasswordField = document.getElementById("generatedPassword");
+
+        passwordInput1.value = generatedPassword;
+        passwordInput2.value = generatedPassword;
+        generatedPasswordField.value = generatedPassword;
+    }
+</script>
+
+{% endblock content %}
